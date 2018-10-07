@@ -1,0 +1,65 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+html {
+    font-size: 62.5%;
+} 
+
+body {
+    font-family: Verdana;
+    font-size: 1.6rem;
+}
+
+.container {
+    padding-top: 10vh;
+    height: 100vh;
+    background: #f7f7f7;
+    text-align: center;
+}
+
+.interface {
+    margin: 5rem;
+    width: 45vw;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-bottom: 3rem;
+    font-size: 6rem;
+    color: firebrick;
+}
+
+.btn, input {
+    margin: .5rem;
+}
+
+input {
+    height: 5rem;
+    width: 45rem;
+}
+
+.btn {
+    height: 4rem;
+    width: 4rem;
+}
+
+input[type="checkbox"] {
+    width: 4rem;
+}
+
+input::placeholder, li {
+    font-size: 3rem;
+}
+
+
+li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

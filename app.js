@@ -9,14 +9,14 @@ let todoList =  {
             completed: false
         })
     },
-    delete: function(index) {
+    delete: function(todo) {
+        let index = this.todos.indexOf(todo);
         this.todos.splice(index, 1);
     }, 
-    edit: function(index, todoText) {
-        this.todos[index] = todoText;
+    edit: function(todo, todoText) {
+        todo.todoText = todoText;
     },
-    toggle: function(index) {
-        let todo = this.todos;
+    toggle: function(todo) {
         todo.completed = !todo.completed;
     },
     toggleAll: function() {
@@ -27,9 +27,7 @@ let todoList =  {
         this.todos.forEach(todo => todo.completed ? completedTotal++ : todo.completed = true)
 
         // set all to not not completed if all are completed
-        length === completedTotal ? 
-            this.todos.forEach(todo => todo.completed = false)
-            : null
+        if (length === completedTotal) { this.todos.forEach(todo => todo.completed = false) }
     }
 }
 
@@ -49,15 +47,21 @@ let handlers = {
     },
     delete: function() {
 
+        views.display();
+
     }, 
     edit: function() {
 
+        views.display();
     },
-    toggle: function() {
-
+    toggle: function(todoItem, index) {
+        //let index = checkbox.parentNode.index;
+        todoList.toggle(todoItem);
+        views.display();
     },
     toggleAll: function() {
 
+        views.display();
     }
 }
 
@@ -68,32 +72,27 @@ let views = {
         
         ul.innerHTML = '';
 
-        todoList.todos.forEach(function(todo, i) {
+        todoList.todos.forEach(function(todo) {
             let li = document.createElement('li'),
-                checkbox = this.createToggleButton();
+                checkbox = this.createToggleButton(todo);
 
             if (todo.completed) {
                 checkbox.checked = true;
-                li.style.textDecoration('strike-through');
+                li.style.textDecoration = 'line-through';
             }
-
-            console.log(checkbox);
             
             li.appendChild(checkbox);
             li.appendChild(document.createTextNode(todo.todoText));
-            li.index = i;
-            li.appendChild(this.createDeleteButton());           
+            li.appendChild(this.createDeleteButton());  
         
             ul.appendChild(li);
         }, this)
     },
-    createToggleButton: function() {
+    createToggleButton: function(item) {
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.className = 'checkbox interface__checkbox'
-
-        //  add event listener on checkbox - complete and strike-through
-
+        checkbox.className = 'interface__checkbox'
+        checkbox.addEventListener('click', handlers.toggle.bind(todoList, item));
         return checkbox;
     },
     createDeleteButton: function() {
