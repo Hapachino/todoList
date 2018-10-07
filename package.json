@@ -8,7 +8,5 @@
   },
   "author": "Erick Brownfield",
   "license": "ISC",
-  "devDependencies": {
-    "node-sass": "^4.9.3"
-  }
+  "devDependencies": {}
 }

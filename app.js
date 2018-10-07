@@ -1,6 +1,5 @@
 'use strict'
 
-// todoList 
 let todoList =  {
     todos: [],
     add: function(todoText) {
@@ -22,86 +21,110 @@ let todoList =  {
     toggleAll: function() {
         let length = this.todos.length,
             completedTotal = 0;
-        
         // set all to completed and count total completed
         this.todos.forEach(todo => todo.completed ? completedTotal++ : todo.completed = true)
-
         // set all to not not completed if all are completed
         if (length === completedTotal) { this.todos.forEach(todo => todo.completed = false) }
     }
 }
 
-// handlers
 let handlers = {
-    // add esc event listener
-    add: function() {
-        let input = document.getElementById('addTodo');
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                todoList.add(input.value);
-                input.value = '';
-                views.display();
-            }
-        })
-
+    add: function(todoText) {
+        todoList.add(todoText);
+        views.refresh();
     },
-    delete: function() {
-
-        views.display();
-
+    delete: function(todo) {
+        todoList.delete(todo);
+        views.refresh();
     }, 
     edit: function() {
 
-        views.display();
+        views.refresh();
     },
-    toggle: function(todoItem, index) {
-        //let index = checkbox.parentNode.index;
-        todoList.toggle(todoItem);
-        views.display();
+    toggle: function(todo) {
+        todoList.toggle(todo);
+        views.refresh();
     },
     toggleAll: function() {
-
-        views.display();
+        todoList.toggleAll();
+        views.refresh();
     }
 }
 
-// views
 let views = {
-    display: function() {
-        let ul = document.querySelector('ul');
+    initial: function() {
+        let userInterface = document.querySelector('.interface');
         
+        // create text input
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'What needs to be done?';
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && input.value) {
+                handlers.add(input.value);
+                input.value = '';
+            }
+        })
+        userInterface.prepend(input);
+    },
+    refresh: function() {
+        // create todo list
+        let ul = document.querySelector('ul');  
         ul.innerHTML = '';
+        
+        let completed = 0;
 
         todoList.todos.forEach(function(todo) {
             let li = document.createElement('li'),
-                checkbox = this.createToggleButton(todo);
+                toggle = this.createToggleButton(todo);
 
             if (todo.completed) {
-                checkbox.checked = true;
+                completed++;
+                toggle.checked = true;
                 li.style.textDecoration = 'line-through';
             }
             
-            li.appendChild(checkbox);
+            li.appendChild(toggle);
             li.appendChild(document.createTextNode(todo.todoText));
-            li.appendChild(this.createDeleteButton());  
-        
+            li.appendChild(this.createDeleteButton(todo));  
             ul.appendChild(li);
         }, this)
+
+        // create toggleAll button
+        let toggleAll = document.querySelector('.toggleAll');
+        if (!toggleAll) { toggleAll = this.createToggleAllButton() };
+        if (completed === 0) {
+            toggleAll.checked = false;
+        } else if (completed === todoList.todos.length) {
+            toggleAll.checked = true;
+        } 
+
+        let userInterface = document.querySelector('.interface');
+        userInterface.prepend(toggleAll);
     },
-    createToggleButton: function(item) {
+    createToggleButton: function(todo) {
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.className = 'interface__checkbox'
-        checkbox.addEventListener('click', handlers.toggle.bind(todoList, item));
+        checkbox.className = 'interface__checkbox toggle'
+        checkbox.addEventListener('click', handlers.toggle.bind(todoList, todo));
         return checkbox;
     },
-    createDeleteButton: function() {
+    createToggleAllButton: function () {
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'interface__checkbox toggleAll'
+        checkbox.addEventListener('click', handlers.toggleAll.bind(todoList));
+        return checkbox;
+    },
+    createDeleteButton: function (todo) {
         let button = document.createElement('button');
         button.textContent = 'x';
         button.className = 'btn btn--delete';
+        button.addEventListener('click', handlers.delete.bind(todoList, todo));
         return button;
     },
 }
 
-handlers.add();
+views.initial();
+
 

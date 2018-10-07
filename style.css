@@ -22,16 +22,16 @@ body {
     text-align: center;
 }
 
-.interface {
-    margin: 5rem;
-    width: 45vw;
-    margin: 0 auto;
-}
-
 h1 {
     margin-bottom: 3rem;
     font-size: 6rem;
     color: firebrick;
+}
+
+.interface {
+    margin: 5rem;
+    width: 40vw;
+    margin: 0 auto;
 }
 
 .btn, input {
@@ -40,7 +40,7 @@ h1 {
 
 input {
     height: 5rem;
-    width: 45rem;
+    width: 40rem;
 }
 
 .btn {
