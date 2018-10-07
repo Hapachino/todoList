@@ -9,10 +9,28 @@ let todoList =  {
             completed: false
         })
     },
-    // delete
-    // edit
-    // toggle
-    // toggleAll
+    delete: function(index) {
+        this.todos.splice(index, 1);
+    }, 
+    edit: function(index, todoText) {
+        this.todos[index] = todoText;
+    },
+    toggle: function(index) {
+        let todo = this.todos;
+        todo.completed = !todo.completed;
+    },
+    toggleAll: function() {
+        let length = this.todos.length,
+            completedTotal = 0;
+        
+        // set all to completed and count total completed
+        this.todos.forEach(todo => todo.completed ? completedTotal++ : todo.completed = true)
+
+        // set all to not not completed if all are completed
+        length === completedTotal ? 
+            this.todos.forEach(todo => todo.completed = false)
+            : null
+    }
 }
 
 // handlers
@@ -21,7 +39,6 @@ let handlers = {
     add: function() {
         let input = document.getElementById('addTodo');
         input.addEventListener('keydown', function(e) {
-            console.log(e);
             if (e.key === 'Enter') {
                 todoList.add(input.value);
                 input.value = '';
@@ -30,10 +47,18 @@ let handlers = {
         })
 
     },
-    // delete
-    // edit
-    // toggle
-    // toggleAll
+    delete: function() {
+
+    }, 
+    edit: function() {
+
+    },
+    toggle: function() {
+
+    },
+    toggleAll: function() {
+
+    }
 }
 
 // views
