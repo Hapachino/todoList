@@ -12,7 +12,7 @@ html {
 
 body {
     font-family: Verdana;
-    font-size: 1.6rem;
+    font-size: 3rem;
 }
 
 .container {
@@ -33,6 +33,15 @@ h1 {
     width: 40vw;
     margin: 0 auto;
 }
+
+li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* 
 
 .btn, input {
     margin: .5rem;
@@ -57,9 +66,12 @@ input::placeholder, li {
 }
 
 
-li {
-    list-style-type: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+
+.filtersPanel > * {
+    width: 15%;
 }
+
+.active {
+    border: 2px solid cornflowerblue;
+} */
