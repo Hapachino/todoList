@@ -31,7 +31,8 @@ let todoList =  {
 let handlers = {
     add: function(todoText) {
         todoList.add(todoText);
-        views.refresh();
+        let filter = this.getFilter();
+        views.refresh(filter);
     },
     delete: function(todo) {
         todoList.delete(todo);
@@ -42,7 +43,9 @@ let handlers = {
         views.refresh();
     },
     getFilter: function() {
-        let filter = document.querySelector('.filtersPanel').id;
+        let filtersPanel = document.querySelector('.filtersPanel'),
+            filter;
+        if (filtersPanel) { filter = filtersPanel.id };
         if (filter === 'filter-all' || !filter) {
             return '';
         } else if (filter === 'filter-completed') {
@@ -108,6 +111,7 @@ let views = {
                 completed++;
                 toggle.checked = true;
                 todoText.style.textDecoration = 'line-through';
+                todoText.style.color = 'grey';
             }
             
             li.appendChild(toggle);   
@@ -120,7 +124,7 @@ let views = {
             filtersPanel = document.querySelector('.filtersPanel');
 
         // based on filtered list
-        if (filteredTodoList.length === 0) {
+        if (filteredTodoList.length === 0 && toggleAll) {
             toggleAll.remove();
         } else if (!toggleAll) {
             toggleAll = this.createToggleAllButton();
@@ -175,7 +179,7 @@ let views = {
     createShowAllButton: function() {
         let button = document.createElement('button');
         button.textContent = 'All';
-        button.className = 'btn btn-filter';
+        button.className = 'btn btn--filter';
         button.id = 'all';
         button.addEventListener('click', this.refresh.bind(views, ''));
         return button;
@@ -183,7 +187,7 @@ let views = {
     createShowCompletedButton: function() {
         let button = document.createElement('button');
         button.textContent = 'Completed';
-        button.className = 'btn btn-filter';
+        button.className = 'btn btn--filter';
         button.id = 'completed';
         button.addEventListener('click', this.refresh.bind(views, 'completed'));
         return button;
@@ -191,7 +195,7 @@ let views = {
     createShowUncompletedButton: function () {
         let button = document.createElement('button');
         button.textContent = 'Uncompleted';
-        button.className = 'btn btn-filter';
+        button.className = 'btn btn--filter';
         button.id = 'uncompleted';
         button.addEventListener('click', this.refresh.bind(views, 'uncompleted'));
         return button;
